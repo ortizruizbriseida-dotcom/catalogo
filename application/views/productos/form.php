@@ -1,25 +1,22 @@
+
 <?php
 
 $editar = isset($producto);
 
 if ($editar)
 {
-    $action =
-        site_url(
-            'productos/actualizar/' .
-            $producto->idprod
-        );
+    $action = site_url(
+        'productos/actualizar/' . $producto->idprod
+    );
 }
 else
 {
-    $action =
-        site_url(
-            'productos/guardar'
-        );
+    $action = site_url(
+        'productos/guardar'
+    );
 }
 
 ?>
-
 
 <div class="row justify-content-center">
 
@@ -30,39 +27,31 @@ else
             <div class="card-header">
 
                 <h3>
-
                     <?= $editar
                         ? 'Modificar producto'
                         : 'Agregar producto'
                     ?>
-
                 </h3>
 
             </div>
 
-
             <div class="card-body">
-
 
                 <?= validation_errors(
                     '<div class="alert alert-danger">',
                     '</div>'
                 ) ?>
 
-
                 <form
                     action="<?= $action ?>"
                     method="post">
-
 
                     <!-- CLAVE -->
 
                     <div class="mb-3">
 
                         <label class="form-label">
-
                             Clave del producto
-
                         </label>
 
                         <input
@@ -70,14 +59,9 @@ else
                             name="claveprod"
                             class="form-control"
                             required
-
                             value="<?= $editar
-                                ? html_escape(
-                                    $producto->claveprod
-                                )
-                                : set_value(
-                                    'claveprod'
-                                )
+                                ? html_escape($producto->claveprod)
+                                : set_value('claveprod')
                             ?>">
 
                     </div>
@@ -88,9 +72,7 @@ else
                     <div class="mb-3">
 
                         <label class="form-label">
-
                             Descripción
-
                         </label>
 
                         <textarea
@@ -98,12 +80,8 @@ else
                             class="form-control"
                             rows="3"
                             required><?= $editar
-                                ? html_escape(
-                                    $producto->descripcion
-                                )
-                                : set_value(
-                                    'descripcion'
-                                )
+                                ? html_escape($producto->descripcion)
+                                : set_value('descripcion')
                             ?></textarea>
 
                     </div>
@@ -114,11 +92,8 @@ else
                     <div class="mb-3">
 
                         <label class="form-label">
-
-                            Línea
-
+                            Marca
                         </label>
-
 
                         <select
                             name="idlinea"
@@ -126,22 +101,21 @@ else
                             required>
 
                             <option value="">
-
-                                Selecciona una línea
-
+                                Selecciona una	Marca
                             </option>
 
-
-                            <?php foreach (
-                                $lineas as $linea
-                            ): ?>
+                            <?php foreach ($lineas as $linea): ?>
 
                                 <option
                                     value="<?= $linea->idlinea ?>"
-
-                                    <?= $editar &&
-                                        $producto->idlinea ==
-                                        $linea->idlinea
+                                    <?= (
+                                        $editar &&
+                                        $producto->linea == $linea->idlinea
+                                    ) ||
+                                    (
+                                        !$editar &&
+                                        set_value('idlinea') == $linea->idlinea
+                                    )
                                         ? 'selected'
                                         : ''
                                     ?>>
@@ -156,6 +130,64 @@ else
 
                         </select>
 
+                        <?= form_error(
+                            'idlinea',
+                            '<div class="text-danger">',
+                            '</div>'
+                        ) ?>
+
+                    </div>
+
+
+                    <!-- PROVEEDOR -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Proveedor
+                        </label>
+
+                        <select
+                            name="proveedor"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Selecciona un proveedor
+                            </option>
+
+                            <?php foreach ($proveedores as $prov): ?>
+
+                                <option
+                                    value="<?= $prov->idprov ?>"
+                                    <?= (
+                                        $editar &&
+                                        $producto->idprov == $prov->idprov
+                                    ) ||
+                                    (
+                                        !$editar &&
+                                        set_value('proveedor') == $prov->idprov
+                                    )
+                                        ? 'selected'
+                                        : ''
+                                    ?>>
+
+                                    <?= html_escape(
+                                        $prov->nombreprov
+                                    ) ?>
+
+                                </option>
+
+                            <?php endforeach; ?>
+
+                        </select>
+
+                        <?= form_error(
+                            'proveedor',
+                            '<div class="text-danger">',
+                            '</div>'
+                        ) ?>
+
                     </div>
 
 
@@ -164,9 +196,7 @@ else
                     <div class="mb-3">
 
                         <label class="form-label">
-
                             Precio de compra
-
                         </label>
 
                         <input
@@ -176,12 +206,9 @@ else
                             step="0.01"
                             min="0"
                             required
-
                             value="<?= $editar
                                 ? $producto->preciocompra
-                                : set_value(
-                                    'preciocompra'
-                                )
+                                : set_value('preciocompra')
                             ?>">
 
                     </div>
@@ -192,9 +219,7 @@ else
                     <div class="mb-3">
 
                         <label class="form-label">
-
                             Precio de venta
-
                         </label>
 
                         <input
@@ -204,12 +229,9 @@ else
                             step="0.01"
                             min="0"
                             required
-
                             value="<?= $editar
                                 ? $producto->precioventa
-                                : set_value(
-                                    'precioventa'
-                                )
+                                : set_value('precioventa')
                             ?>">
 
                     </div>
@@ -222,11 +244,8 @@ else
                     <div class="mb-3">
 
                         <label class="form-label">
-
                             Estado
-
                         </label>
-
 
                         <select
                             name="status_prod"
@@ -234,24 +253,23 @@ else
 
                             <option
                                 value="1"
-                                <?= $producto->status_prod == 1
+                                <?= $producto->estatus_prod == 'ALTA'
                                     ? 'selected'
                                     : ''
                                 ?>>
 
-                                Activo
+                                ALTA
 
                             </option>
 
-
                             <option
                                 value="0"
-                                <?= $producto->status_prod == 0
+                                <?= $producto->estatus_prod == 'BAJA'
                                     ? 'selected'
                                     : ''
                                 ?>>
 
-                                Inactivo
+                                BAJA
 
                             </option>
 
@@ -261,6 +279,8 @@ else
 
                     <?php endif; ?>
 
+
+                    <!-- BOTONES -->
 
                     <button
                         type="submit"
@@ -273,7 +293,6 @@ else
 
                     </button>
 
-
                     <a
                         href="<?= site_url('productos') ?>"
                         class="btn btn-secondary">
@@ -281,7 +300,6 @@ else
                         Cancelar
 
                     </a>
-
 
                 </form>
 
